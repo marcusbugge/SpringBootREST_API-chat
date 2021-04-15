@@ -12,47 +12,29 @@ public class Room {
     String roomName;
     Integer roomSpace;
 
-    public static ArrayList<User> connectedUsers = new ArrayList<>();
-
-    public static ArrayList<Message> messages = new ArrayList<>();
+    public ArrayList<User> connectedUsers;
+    public ArrayList<Message> messages;
 
     public Room(String roomID, String roomName, Integer roomSpace) {
         this.roomID = roomID;
         this.roomName = roomName;
         this.roomSpace = roomSpace;
-    }
 
-    public static void makeRoom(String roomID, String roomName, Integer roomSpace) {
-        Data.availableRooms.add(new Room(roomID, roomName, roomSpace));
-    }
-
-    public void addMessage(Message message, String roomID) {
-        for (Room room : Data.availableRooms) {
-            if (room.getRoomID().equals(roomID)) {
-                room.getMessages().add(message);
-            }
-        }
+        messages = new ArrayList<>();
+        connectedUsers = new ArrayList<>();
     }
 
     public ArrayList<Message> getMessages() {
         return messages;
     }
 
-    public ArrayList<Message> getMessagesFromRoomID(String roomID) {
-        for (Room room : Data.availableRooms) {
-            if (room.getRoomID().equals(roomID)) {
-                return room.getMessages();
-            }
-        }
-        return new ArrayList<>();
-    }
 
-    public static ArrayList<User> getConnectedUsers() {
+    public ArrayList<User> getConnectedUsers() {
         return connectedUsers;
     }
 
-    public static void setConnectedUsers(ArrayList<User> connectedUsers) {
-        Room.connectedUsers = connectedUsers;
+    public  void setConnectedUsers(ArrayList<User> connectedUsers) {
+        this.connectedUsers = connectedUsers;
     }
 
     public String getRoomID() {

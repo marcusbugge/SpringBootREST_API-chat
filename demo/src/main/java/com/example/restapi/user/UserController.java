@@ -27,4 +27,9 @@ public class UserController {
         return Data.connectedUsers;
     }
 
+    @GetMapping("/api/user/{userID}")
+    public User findUser(@PathVariable String userID) {
+        return userService.findUserByID(userID);
+
+    }
 }

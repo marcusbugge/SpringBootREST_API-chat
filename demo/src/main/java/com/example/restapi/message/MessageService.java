@@ -12,6 +12,7 @@ import java.util.ArrayList;
 public class MessageService {
 
     Data data = new Data();
+    RoomService roomService = new RoomService();
 
     public ArrayList<Message> showMessagesByID(String roomID) {
         for (Room room : data.getAvailableRooms()) {
@@ -24,8 +25,11 @@ public class MessageService {
 
     public void addMessageToRoom(Message newMessage, String roomID) {
         Room room = RoomService.findRoomByID(roomID);
-        room.addMessage(newMessage, roomID);
+        System.out.println(room);
 
-        System.out.println(room.getMessagesFromRoomID(roomID));
+        if (room != null) {
+            roomService.addMessage(room, newMessage);
+            System.out.println(roomService.getMessagesFromRoomID(roomID));
+        }
     }
 }

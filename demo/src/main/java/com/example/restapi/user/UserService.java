@@ -27,4 +27,10 @@ public class UserService {
         return null;
     }
 
+    public User findUserByID(String userID) {
+        /*for (User user : Data.connectedUsers) {
+            if (user.getId() = userID)
+        }*/
+        return null;
+    }
 }

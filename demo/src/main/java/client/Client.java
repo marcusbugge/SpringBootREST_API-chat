@@ -14,30 +14,49 @@ import java.util.Scanner;
 
 public class Client <T> {
 
+    public static final String path1 = "http://localhost:8081/api/room/1/messages";
+    public static final String path2 = "http://localhost:8081/api/room/2/messages";
+    public static final String path3 = "http://localhost:8081/api/users";
+    public static final String path4 = "http://localhost:8081/api/rooms";
+    public static final String path5 = "http://localhost:8081/api/room/1/users";
+    public static final String path6 = "http://localhost:8081/api/room/2/users";
+    public static final String path7 = "http://localhost:8081/api/room/3/users";
+
     static HttpClient httpClient = HttpClient.newBuilder()
             .version(HttpClient.Version.HTTP_2)
             .build();
 
     public static void main(String[] args) throws IOException, InterruptedException {
-        registrerUser();
-        addRoom();
+        User user = registrerUser();
+        connectToRoom(user);
 
-        getAll(Data.api_userPath);
-        getAll(Data.api_roomPath);
+        getAll(path1);
+        getAll(path2);
+        getAll(path3);
+        getAll(path4);
     }
 
-    private static void addRoom() throws IOException, InterruptedException {
-        System.out.println("Add a room by typing /add <roomname>");
+    private static void connectToRoom(User newUser) throws IOException, InterruptedException {
+        System.out.println("Connect to a room by typing /connect <roomname>");
+        System.out.println("Supported rooms: [1, 2, 3]");
 
         String[] array = readFromTerminal().split(" ");
-        postRequest(Data.api_roomPath, new Room("12345", array[1], 10));
+        if (array[0].equals("1")) {
+            postRequest(path5, newUser);
+        } else if (array[1].equals("2")) {
+            postRequest(path6, newUser);
+        } else postRequest(path7, newUser);
     }
 
-    private static void registrerUser() throws IOException, InterruptedException {
+    private static User registrerUser() throws IOException, InterruptedException {
         System.out.println("Please registrer by typing /reg <your name>");
 
         String[] array = readFromTerminal().split(" ");
-        // postRequest(Data.api_userPath, new User(1, array[1], Data.availableRooms.get(0)));
+
+        User user = new User(1, array[1]);
+        postRequest(path3, user);
+
+        return user;
     }
 
     private static String readFromTerminal() throws IOException {
@@ -51,6 +70,9 @@ public class Client <T> {
         ObjectMapper mapper = new ObjectMapper();
         String json = mapper.writeValueAsString(object);
 
+        System.out.println(object);
+        System.out.println(json);
+
         HttpRequest request = HttpRequest.newBuilder()
                 .POST(HttpRequest.BodyPublishers.ofString(json))
                 .uri(URI.create(path))
@@ -59,11 +81,8 @@ public class Client <T> {
 
         HttpResponse<String> response = httpClient.send(request, HttpResponse.BodyHandlers.ofString());
 
-//        // print status code
-//        System.out.println("Status code: " + response.statusCode());
-//
-//        // print response body
-//        System.out.println("Response body: " + response.body());
+        System.out.println(response.statusCode());
+        System.out.println(response.body());
 
     }
 
