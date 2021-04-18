@@ -12,16 +12,14 @@ public class Room {
     String roomName;
     Integer roomSpace;
 
-    public ArrayList<User> connectedUsers;
-    public ArrayList<Message> messages;
+    public ArrayList<User> connectedUsers = new ArrayList<>();
+    public ArrayList<Message> messages = new ArrayList<>();
 
     public Room(String roomID, String roomName, Integer roomSpace) {
         this.roomID = roomID;
         this.roomName = roomName;
         this.roomSpace = roomSpace;
 
-        messages = new ArrayList<>();
-        connectedUsers = new ArrayList<>();
     }
 
     public ArrayList<Message> getMessages() {

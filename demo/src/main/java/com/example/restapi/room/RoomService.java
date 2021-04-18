@@ -12,16 +12,36 @@ public class RoomService {
 
     Data data = new Data();
 
+
     public RoomService() {
 
     }
 
-    public void addUserToRoom(User user, String roomID) {
-        Room room = findRoomByID(roomID);
-        System.out.println(room);
-        if (room != null) {
-            room.getConnectedUsers().add(user);
+    public String addUserToRoom(Integer userID, String roomID) {
+        if (findUserByID(userID) != null) {
+            if (!checkifUserIsInRoom(userID, roomID)) {
+
+                Room room = findRoomByID(roomID);
+                User user = findUserByID(userID);
+
+                if (room != null && user != null) {
+                    room.getConnectedUsers().add(user);
+                    user.getJoinedRooms().add(roomID);
+                    return "User added to room: " + roomID + "!";
+                }
+            }
+            return "User with ID " + userID + " is already in this room";
         }
+       return "User with ID " + userID + " is not registered";
+    }
+
+    private User findUserByID(Integer userID) {
+        for (User user : Data.connectedUsers) {
+            if (user.getId().equals(userID)) {
+                return user;
+            }
+        }
+        return null;
     }
 
     public void addRoom(Room newRoom) {
@@ -61,5 +81,18 @@ public class RoomService {
             }
         }
         return new ArrayList<>();
+    }
+
+    public boolean checkifUserIsInRoom(Integer userID, String roomID) {
+        Room room = findRoomByID(roomID);
+        System.out.println(room);
+        if (room != null) {
+            for (User user : room.getConnectedUsers()) {
+                if (user.getId().equals(userID)) {
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 }

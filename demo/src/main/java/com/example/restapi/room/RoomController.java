@@ -24,11 +24,8 @@ public class RoomController {
     }
 
     @PostMapping("/api/room/{roomID}/users")
-    private User joinRoom(@RequestBody User user, @PathVariable String roomID) {
-        System.out.println("Room id: " + roomID);
-        System.out.println("User: " + user);
-        roomService.addUserToRoom(user, roomID);
-        return user;
+    private String joinRoom(@RequestBody Integer userID, @PathVariable String roomID) {
+        return roomService.addUserToRoom(userID, roomID);
     }
 
     @GetMapping("/api/rooms")

@@ -17,7 +17,7 @@ public class UserController {
     }
 
     @PostMapping("/api/users")
-    public User addUser(@RequestBody User newUser) {
+    public String addUser(@RequestBody String newUser) {
         userService.RegistrerUser(newUser);
         return newUser;
     }
@@ -28,8 +28,12 @@ public class UserController {
     }
 
     @GetMapping("/api/user/{userID}")
-    public User findUser(@PathVariable String userID) {
+    public User findUser(@PathVariable Integer userID) {
         return userService.findUserByID(userID);
+    }
 
+    @GetMapping("/api/username/{username}")
+    public Integer findUserID(@PathVariable String username) {
+        return userService.findUserID(username);
     }
 }
